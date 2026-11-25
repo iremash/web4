@@ -1,0 +1,375 @@
+/* Базовые стили: чёрно-серая тема (как в лабах 2–3) */
+html {
+    color-scheme: dark;
+}
+
+body {
+    margin: 0;
+    font-family: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+    color: #e4e4e4;
+    background: #0f0f10;
+}
+
+/* Шапка */
+#header {
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    color: #f4f4f4;
+    font-size: 18px;
+    background: #000000;
+    border-bottom: 1px solid #3a3a3b;
+    padding: 16px 24px;
+}
+
+#header > .header-name {
+    font-size: 1.4em;
+    font-weight: bold;
+    letter-spacing: 0.02em;
+}
+
+#header > .header-info::before {
+    content: "• ";
+    color: #8c8c8d;
+}
+
+#header::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+#film {
+    float: right;
+    width: 65%;
+    aspect-ratio: 3465 / 442;
+    margin-left: 24px;
+    background-image: url("img/quote.jpeg");
+    background-size: 20% 100%;
+    background-repeat: repeat-x;
+}
+
+/* Меню: переход между страницами */
+.header-nav {
+    margin-top: 10px;
+}
+
+.header-nav > a {
+    display: inline-block;
+    margin-right: 8px;
+    padding: 4px 12px;
+    border: 1px solid #4a4a4b;
+    border-radius: 4px;
+    color: #e4e4e4;
+    text-decoration: none;
+    font-size: 0.85em;
+}
+
+.header-nav > a:hover {
+    border-color: #bdbdbe;
+}
+
+.header-nav > a.active {
+    background: #dcdcdc;
+    border-color: #dcdcdc;
+    color: #111111;
+}
+
+/* Блоки */
+#main {
+    padding: 20px;
+    font-size: 0;
+}
+
+.block {
+    font-size: 1rem;
+    display: inline-block;
+    vertical-align: top;
+    width: 48%;
+    box-sizing: border-box;
+    margin: 1%;
+    background: #1b1b1c;
+    border: 1px solid #2e2e2f;
+    border-radius: 8px;
+    padding: 16px 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+#results-block {
+    width: 98%;
+}
+
+#stats-block {
+    display: block;
+    width: auto;
+    max-width: 640px;
+    margin: 1% auto;
+}
+
+.block-title {
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    margin-top: 0;
+    color: #f0f0f0;
+}
+
+.block-title::after {
+    content: "";
+    display: block;
+    width: 48px;
+    height: 3px;
+    margin-top: 6px;
+    background: #8c8c8d;
+}
+
+#plot {
+    display: block;
+    cursor: crosshair;
+    max-width: 100%;
+    margin: 0 auto;
+    border: 1px solid #3a3a3b;
+    border-radius: 8px;
+    background: #ffffff;
+}
+
+/* Форма */
+.field {
+    margin: 3% 0;
+}
+
+.field-label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 1%;
+}
+
+#plot-block,
+#form-block {
+    min-height: 500px;
+}
+
+/* X: кнопки-плитки */
+.button-group > .x-btn {
+    min-width: 2.6em;
+    margin: 0 1% 1% 0;
+    padding: 6px 0;
+    font: inherit;
+    text-align: center;
+    border: 1px solid #4a4a4b;
+    border-radius: 4px;
+    background: #262627;
+    color: #e4e4e4;
+    cursor: pointer;
+}
+
+.button-group > .x-btn:hover {
+    border-color: #bdbdbe;
+    background: #333334;
+}
+
+.button-group > .x-btn:focus-visible {
+    outline: 2px solid #bdbdbe;
+    outline-offset: 1px;
+}
+
+.button-group > .x-btn.selected {
+    background: #dcdcdc;
+    border-color: #dcdcdc;
+    color: #111111;
+}
+
+.button-group.invalid > .x-btn {
+    border-color: #ef6b5f;
+}
+
+#r-select,
+#y-input {
+    margin: 1% 0;
+    padding: 1% 2%;
+    width: 60%;
+    font: inherit;
+    color: #f0f0f0;
+    background: #141415;
+    border: 1px solid #4a4a4b;
+    border-radius: 4px;
+}
+
+#r-select:focus,
+#y-input:focus {
+    outline: none;
+    border-color: #bdbdbe;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.15);
+}
+
+#y-input::placeholder {
+    color: #77777a;
+    font-style: italic;
+}
+
+#r-select.invalid,
+#y-input.invalid {
+    border-color: #ef6b5f;
+    background: #2a1816;
+}
+
+.error {
+    min-height: 1.2em;
+    margin-top: 1%;
+    color: #ef6b5f;
+    font-size: 0.9em;
+}
+
+.success,
+.fail {
+    min-height: 1.2em;
+    margin-top: 1%;
+    font-weight: bold;
+}
+
+.success {
+    color: #5fd49a;
+}
+
+.fail {
+    color: #ef6b5f;
+}
+
+/* Кнопки */
+.buttons > button {
+    display: inline-block;
+    margin: 2% 2% 0 0;
+    padding: 8px 16px;
+    font: inherit;
+    border: none;
+    border-radius: 4px;
+    background: #dcdcdc;
+    color: #111111;
+    cursor: pointer;
+}
+
+.buttons > button:hover {
+    background: #ffffff;
+}
+
+.buttons > button:active {
+    transform: translateY(1px);
+}
+
+.buttons > button:disabled {
+    background: #5a5a5b;
+    color: #9a9a9b;
+    cursor: not-allowed;
+}
+
+.buttons > button.danger {
+    background: #ef6b5f;
+}
+
+.buttons > button.danger:hover {
+    background: #ff8a80;
+}
+
+.buttons > button.secondary {
+    background: #333334;
+    color: #e4e4e4;
+}
+
+.buttons > button.secondary:hover {
+    background: #444445;
+}
+
+/* Таблицы */
+.table-wrap {
+    overflow-x: auto;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table th,
+.data-table td {
+    padding: 6px 10px;
+    border-bottom: 1px solid #333334;
+    text-align: center;
+}
+
+.data-table > thead th {
+    background: #262627;
+    color: #f0f0f0;
+}
+
+.data-table > tbody > tr:nth-child(even) {
+    background: #202021;
+}
+
+.data-table > tbody > tr:hover {
+    background: #2c2c2d;
+}
+
+/* В статистике заголовки строк слева */
+.stats-table th {
+    text-align: left;
+    width: 50%;
+}
+
+td.hit {
+    color: #5fd49a;
+    font-weight: bold;
+}
+
+td.miss {
+    color: #ef6b5f;
+    font-weight: bold;
+}
+
+.empty {
+    color: #8a8a8c;
+}
+
+/* Модальное окно: затемнение на весь экран, окно по центру.
+   display: none, пока нет класса open — его ставит и снимает stats.js */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.modal-overlay.open {
+    display: flex;
+}
+
+.modal {
+    width: 90%;
+    max-width: 420px;
+    box-sizing: border-box;
+    padding: 20px 24px;
+    background: #1b1b1c;
+    border: 1px solid #3a3a3b;
+    border-radius: 8px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
+}
+
+.modal-title {
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    margin-top: 0;
+}
+
+@media (max-width: 800px) {
+    #film {
+        float: none;
+        width: 100%;
+        margin: 12px 0 0;
+    }
+
+    .block {
+        width: 98%;
+    }
+
+    #plot-block,
+    #form-block {
+        min-height: 0;
+    }
+}

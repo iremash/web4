@@ -1,0 +1,40 @@
+// Сборка: ./gradlew war  ->  build/libs/lab4.war
+//
+// Структура проекта (стандартная для Gradle, IDEA распознаёт её сама):
+//   src/main/java      Java-код: конфигурация Spring, контроллеры, модель, сервисы
+//   src/main/webapp    веб-часть: WEB-INF (web.xml, шаблоны Thymeleaf) и static (css, js, картинки)
+//   server/            скрипты для Helios: run.sh и setup-wildfly.sh (в war не попадают)
+
+plugins {
+    id 'war'
+}
+
+repositories {
+    mavenCentral()
+}
+
+// Spring 6.2 — последняя ветка на Jakarta EE 10 (Servlet 6.0), это ровно то, что даёт WildFly 34.
+// Spring 7 требует Servlet 6.1 (Jakarta EE 11), на WildFly 34 он не заработает.
+def springVersion = '6.2.19'
+
+dependencies {
+    // implementation: эти jar-ы попадут в war (WEB-INF/lib), на сервере их нет
+    implementation "org.springframework:spring-webmvc:${springVersion}"
+    implementation 'org.thymeleaf:thymeleaf-spring6:3.1.3.RELEASE'
+
+    // compileOnly: Servlet API нужен только для компиляции, реализацию даёт WildFly.
+    // Если положить этот jar внутрь war, он будет конфликтовать с серверным.
+    compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.release = 17          // на Helios Java 17; собирать можно любым JDK 17+
+    options.encoding = 'UTF-8'
+    // Сохранить имена параметров методов в .class: Spring по ним связывает ?x=..&y=.. с аргументами.
+    // В контроллере имена ещё и указаны явно (@RequestParam(name = "x")), так что это страховка.
+    options.compilerArgs << '-parameters'
+}
+
+war {
+    archiveFileName = 'lab4.war'    // имя war без .war = путь приложения: /lab4
+}

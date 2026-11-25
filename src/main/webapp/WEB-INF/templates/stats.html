@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Статистика')}"></head>
+<body>
+
+<header th:replace="~{fragments :: header('stats')}"></header>
+
+<main id="main">
+    <div class="block" id="stats-block">
+        <h2 class="block-title">Статистика</h2>
+        <!-- stats — StatsSnapshot, который положил в модель StatsController -->
+        <table class="data-table stats-table">
+            <tbody>
+            <tr>
+                <th>Всего точек</th>
+                <td th:text="${stats.total}">0</td>
+            </tr>
+            <tr>
+                <th>Попаданий</th>
+                <td class="hit" th:text="${stats.hits}">0</td>
+            </tr>
+            <tr>
+                <th>Промахов</th>
+                <td class="miss" th:text="${stats.misses}">0</td>
+            </tr>
+            <tr>
+                <th>Последняя очистка</th>
+                <!-- время отдаём числом (мс UTC), текст в поясе устройства соберёт common.js -->
+                <td th:if="${stats.lastClearTime != null}" th:data-time="${stats.lastClearTime}"></td>
+                <td th:unless="${stats.lastClearTime != null}">ещё не было</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="buttons">
+            <button type="button" id="clear-btn">Очистить состояние</button>
+        </div>
+    </div>
+</main>
+
+<!-- Своё модальное окно вместо confirm(): скрыто, пока у него нет класса open -->
+<div class="modal-overlay" id="confirm-modal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <h3 class="modal-title" id="modal-title">Очистить все точки?</h3>
+        <p>Будут удалены точки всех пользователей, статистика обнулится. Отменить это нельзя.</p>
+        <!-- Настоящая очистка — POST-запрос этой формы; JS только показывает и прячет окно -->
+        <form class="buttons" th:action="@{/clear}" method="post">
+            <button type="submit" class="danger" id="confirm-yes">Очистить</button>
+            <button type="button" class="secondary" id="confirm-no">Отмена</button>
+        </form>
+    </div>
+</div>
+
+<script th:src="@{/static/common.js}"></script>
+<script th:src="@{/static/stats.js}"></script>
+</body>
+</html>

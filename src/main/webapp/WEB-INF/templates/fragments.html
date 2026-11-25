@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<!-- Общие куски страниц. Подключаются в stats.html и main.html через th:replace,
+     поэтому шапка пишется один раз, а не копируется, как было в index.jsp и result.jsp -->
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${title}">Лабораторная работа №4</title>
+    <!-- @{...} сам добавит путь приложения: /lab4/static/style.css -->
+    <link rel="stylesheet" th:href="@{/static/style.css}">
+</head>
+
+<body>
+
+<!-- active: какая страница открыта, чтобы подсветить её в меню -->
+<header id="header" th:fragment="header(active)">
+    <div id="film" aria-hidden="true"></div>
+    <div class="header-name">Новошицкая Анна Николаевна</div>
+    <div class="header-info">Группа P3232</div>
+    <div class="header-info">Вариант 38380883</div>
+    <nav class="header-nav">
+        <a th:href="@{/}" th:classappend="${active == 'stats'} ? 'active'">Статистика</a>
+        <a th:href="@{/main}" th:classappend="${active == 'main'} ? 'active'">Область</a>
+    </nav>
+</header>
+
+</body>
+</html>

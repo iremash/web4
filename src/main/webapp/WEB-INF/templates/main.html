@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Лабораторная работа №4')}"></head>
+<body>
+
+<header th:replace="~{fragments :: header('main')}"></header>
+
+<main id="main">
+    <!-- График -->
+    <div class="block" id="plot-block">
+        <h2 class="block-title">Область</h2>
+        <canvas id="plot" width="400" height="400"></canvas>
+        <div class="error" id="plot-error"></div>
+    </div>
+
+    <!-- Форма: обычная отправка GET на /check, после проверки сервер вернёт сюда же (redirect) -->
+    <div class="block" id="form-block">
+        <h2 class="block-title">Параметры точки</h2>
+        <form id="point-form" th:action="@{/check}" method="get" novalidate>
+
+            <!-- X: кнопки. Сама кнопка ничего не отправляет (type="button"),
+                 JS кладёт её значение в скрытое поле x — оно и уйдёт на сервер -->
+            <div class="field">
+                <span class="field-label">X:</span>
+                <div class="button-group" id="x-group">
+                    <button type="button" class="x-btn"
+                            th:each="xv : ${xValues}" th:data-value="${xv}" th:text="${xv}">0</button>
+                </div>
+                <input type="hidden" name="x" id="x-input">
+                <div class="error" id="x-error"></div>
+            </div>
+
+            <!-- Y -->
+            <div class="field">
+                <label class="field-label" for="y-input">Y:</label>
+                <input type="text" id="y-input" name="y" maxlength="14"
+                       placeholder="число в интервале (-3, 5)" autocomplete="off">
+                <div class="error" id="y-error"></div>
+            </div>
+
+            <!-- R: по умолчанию выбран R последней проверки, чтобы на графике сразу были точки -->
+            <div class="field">
+                <label class="field-label" for="r-select">R:</label>
+                <select id="r-select" name="r">
+                    <option value="" disabled th:selected="${selectedR == null}">выберите R</option>
+                    <option th:each="rv : ${rValues}" th:value="${rv}" th:text="${rv}"
+                            th:selected="${rv == selectedR}">1</option>
+                </select>
+                <div class="error" id="r-error"></div>
+            </div>
+
+            <div class="buttons">
+                <button type="submit" id="submit-btn">Проверить</button>
+            </div>
+
+            <!-- Ошибка от сервера (код 400). th:text экранирует < > & " — защита от XSS -->
+            <p class="fail" th:if="${error != null}" th:text="${error}"></p>
+
+            <!-- Вердикт последней проверки: flash-атрибут, есть только сразу после redirect -->
+            <p th:if="${last != null}"
+               th:class="${last.hit} ? 'success' : 'fail'"
+               th:text="${last.hit} ? 'Детка, ты выполнила задание на 5+' : 'Я могу расплакаться'"></p>
+        </form>
+    </div>
+
+    <!-- Результаты: список из HTTP-сессии (SessionHistory) -->
+    <div class="block" id="results-block">
+        <h2 class="block-title">Результаты</h2>
+        <div class="table-wrap">
+            <table class="data-table" id="results">
+                <thead>
+                <tr>
+                    <th>X</th>
+                    <th>Y</th>
+                    <th>R</th>
+                    <th>Результат</th>
+                    <th>Дата и время</th>
+                    <th>Время работы, мкс</th>
+                </tr>
+                </thead>
+                <tbody id="results-body">
+                <!-- data-* читает main.js, чтобы нарисовать точки -->
+                <tr th:each="row : ${results}"
+                    th:data-x="${row.x}" th:data-y="${row.y}" th:data-r="${row.r}" th:data-hit="${row.hit}">
+                    <td th:text="${row.x}"></td>
+                    <td th:text="${row.y}"></td>
+                    <td th:text="${row.r}"></td>
+                    <td th:class="${row.hit} ? 'hit' : 'miss'"
+                        th:text="${row.hit} ? 'Попадание' : 'Промах'"></td>
+                    <td th:data-time="${row.time}"></td>
+                    <td th:text="${row.exec}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="empty" th:if="${#lists.isEmpty(results)}">Пока нет ни одной проверки.</p>
+    </div>
+</main>
+
+<script th:src="@{/static/common.js}"></script>
+<script th:src="@{/static/main.js}"></script>
+</body>
+</html>
